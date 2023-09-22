@@ -86,7 +86,8 @@ EMPLOYEES Å×ÀÌºí¿¡¼­ ÀÌ¸§, ÀÔ»çÀÏÀÚ ÄÃ·³À¸·Î º¯°æÇØ¼­ ÀÌ¸§¼øÀ¸·Î ¿À¸§Â÷¼ø Ãâ·Â Ç
 SELECT 
     CONCAT(first_name, last_name) AS ÀÌ¸§,
     REPLACE(hire_date, '/', '') AS ÀÔ»çÀÏÀÚ
-FROM employees;
+FROM employees
+ORDER BY ÀÌ¸§;
 
 
 /*
@@ -96,7 +97,7 @@ EMPLOYEES Å×ÀÌºí¿¡¼­ phone_numberÄÃ·³Àº ###.###.####ÇüÅÂ·Î ÀúÀåµÇ¾î ÀÖ´Ù
 ÀüÈ­ ¹øÈ£¸¦ Ãâ·ÂÇÏµµ·Ï Äõ¸®¸¦ ÀÛ¼ºÇÏ¼¼¿ä. (CONCAT, SUBSTR »ç¿ë)
 */
 SELECT 
-    CONCAT('(02)', SUBSTR(phone_number, INSTR(phone_number, '.'))) AS ÀüÈ­¹øÈ£
+    CONCAT('(02)', SUBSTR(phone_number, 5)) AS ÀüÈ­¹øÈ£
 FROM employees;    
 
 
