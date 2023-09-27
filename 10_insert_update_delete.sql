@@ -2,6 +2,7 @@
 -- insert
 -- 테이블 구조 확인
 DESC departments;
+DESC employees;
 
 -- INSERT의 첫번째 방법 (모든 컬럼 데이터를 한 번에 지정)
 INSERT INTO departments

@@ -97,9 +97,12 @@ ORDER BY employee_id ASC;
 
 ROLLBACK;
 
+--------------------------------------------------------------------------------
+
 CREATE TABLE depts AS (SELECT * FROM departments);
 SELECT * FROM depts;
 
+-- 문제 1
 INSERT INTO depts
 VALUES (280, '개발', null, 1800);
 
@@ -116,10 +119,18 @@ INSERT INTO depts
 VALUES (320, '영업', 303, 1700);
 
 ROLLBACK;
+
+-- 문제 2
+SELECT * FROM depts;
+
+-- 2-1
+
 UPDATE depts SET department_name = 'IT bank'
 WHERE department_name = 'IT Support';
 
-UPDATE depts SET department_id = 301
+-- 2-2
+
+UPDATE depts SET manager_id = 301
 WHERE department_id = 290;
 
 UPDATE depts SET department_name = 'IT Help', manager_id = 303, location_id = 1800
@@ -128,19 +139,28 @@ WHERE department_name = 'IT Helpdesk';
 UPDATE depts SET manager_id = 301
 WHERE department_name IN ('회계부', '재정', '인사', '영업');
 
+SELECT * FROM depts;
+
+-- 문제 3
 DELETE FROM depts
 WHERE department_id IN (SELECT department_id FROM depts
-                        WHERE department_name IN ('영업부', 'NOC'));
+                        WHERE department_name IN ('영업', 'NOC'));
 
+-- 문제 4
+-- 4-1
 CREATE TABLE depts2 AS 
 (SELECT * FROM depts);
 
 DELETE FROM depts2
 WHERE department_id > 200;
 
+-- 4-2
 UPDATE depts2 SET manager_id = 100
 WHERE manager_id IS NOT NULL;
 
+SELECT * FROM depts2;
+
+-- 4-3, 4-4
 SELECT * FROM depts;
 
 MERGE INTO depts a
@@ -158,7 +178,8 @@ WHEN NOT MATCHED THEN
         b.manager_id,
         b.location_id);
         
-        
+-- 문제 5
+-- 5-1
 CREATE TABLE jobs_it AS
 (SELECT * FROM jobs
 WHERE 1 = 2);
@@ -169,6 +190,7 @@ INSERT INTO jobs_it
 (SELECT * FROM jobs
 WHERE min_salary > 6000);
 
+-- 5-2
 INSERT INTO jobs_it
 VALUES ('IT_DEV', '아이티개발팀', 6000, 20000);
 
@@ -181,14 +203,15 @@ VALUES ('SEC_DEV', '보안개발팀', 6000, 19000);
 DELETE FROM jobs_it
 WHERE job_title = '보안개발팀';
 
+-- 5-4
 MERGE INTO jobs_it a
-    USING (SELECT * FROM jobs) b
+    USING (SELECT * FROM jobs WHERE min_salary > 5000) b
     ON (a.job_id = b.job_id)
 WHEN MATCHED THEN    
     UPDATE SET
         a.min_salary = b.min_salary,
         a.max_salary = b.max_salary
-        WHERE a.min_salary > 5000
+        
 WHEN NOT MATCHED THEN        
     INSERT VALUES
         (b.job_id, b.job_title, b.min_salary, b.max_salary);
